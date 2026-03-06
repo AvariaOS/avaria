@@ -1,4 +1,4 @@
-KERNEL_NAME := kernix
+KERNEL_NAME := avaria
 ISO_DIR := iso_root
 ISO_NAME := kernel.iso
 INITRD := initrd.tar

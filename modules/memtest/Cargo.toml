@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-kernix-api = { path = "../../src/kern/crates/kernix-api" }
+avaria-api = { path = "../../src/kern/crates/avaria-api" }
 
 [profile.release]
 panic = "abort"

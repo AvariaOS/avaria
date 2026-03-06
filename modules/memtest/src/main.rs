@@ -1,11 +1,11 @@
 #![no_std]
 #![no_main]
 
-use kernix_api::KernixApi;
+use avaria_api::avariaApi;
 
 const ITERS: usize = 1_000_000;
 
-fn print_num(api: &KernixApi, mut v: u64) {
+fn print_num(api: &avariaApi, mut v: u64) {
     if v == 0 {
         api.serial_print("0");
         return;
@@ -25,7 +25,7 @@ fn print_num(api: &KernixApi, mut v: u64) {
     }
 }
 
-fn bench_slab(api: &KernixApi, size: usize) {
+fn bench_slab(api: &avariaApi, size: usize) {
     api.serial_print("  slab ");
     print_num(api, size as u64);
     api.serial_print("B x");
@@ -55,7 +55,7 @@ fn bench_slab(api: &KernixApi, size: usize) {
     api.serial_print(" ms\n");
 }
 
-fn bench_buddy(api: &KernixApi, order: usize) {
+fn bench_buddy(api: &avariaApi, order: usize) {
     let pages = 1usize << order;
     let size = pages * 4096;
 
@@ -90,7 +90,7 @@ fn bench_buddy(api: &KernixApi, order: usize) {
     api.serial_print(" ms\n");
 }
 
-fn bench_mixed(api: &KernixApi) {
+fn bench_mixed(api: &avariaApi) {
     api.serial_print("  mixed alloc/free x");
     print_num(api, ITERS as u64);
     api.serial_print(": ");
@@ -120,7 +120,7 @@ fn bench_mixed(api: &KernixApi) {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn _module_entry(api: &KernixApi) -> i32 {
+pub extern "C" fn _module_entry(api: &avariaApi) -> i32 {
     api.serial_print("\nMemtest: alloc benchmark\n");
     api.serial_print("TSC freq: ");
     print_num(api, api.tsc_khz() / 1000);

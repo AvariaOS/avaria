@@ -10,7 +10,7 @@ use kern::fs::initrd::TarFs;
 use kern::fs::vfs::FileSystem;
 use kern::gfx::{psf::PsfFont, vesa::Framebuffer};
 use kern::serial;
-use kernix_api::KernixApi;
+use avaria_api::avariaApi;
 use limine::BaseRevision;
 use kern::arch::x86_64::{cpu, gdt, idt, lapic, pic, smp, sse, tsc, tss};
 use limine::request::{
@@ -136,7 +136,7 @@ unsafe extern "C" fn api_preempt_enable() {
     kern::sched::preempt_enable();
 }
 
-static KERNIX_API: KernixApi = KernixApi {
+static AVARIA_API: avariaApi = avariaApi {
     serial_puts: api_serial_puts,
     fb_draw_str: api_fb_draw_str,
     fs_read: api_fs_read,
@@ -151,7 +151,7 @@ static KERNIX_API: KernixApi = KernixApi {
 #[unsafe(no_mangle)]
 unsafe extern "C" fn _start() -> ! {
     serial::init();
-    serial::puts("Kernix booting...\n");
+    serial::puts("avaria booting...\n");
 
     if !BASE_REVISION.is_supported() {
         serial::puts("FATAL: base revision not supported\n");
@@ -296,7 +296,7 @@ unsafe extern "C" fn _start() -> ! {
         Some(data) => data,
         None => {
             serial::puts("WARN: initrd not found\n");
-            serial::puts("Kernix ready.\n");
+            serial::puts("avaria ready.\n");
             hlt_loop();
         }
     };
@@ -349,7 +349,7 @@ unsafe extern "C" fn _start() -> ! {
 
         let buf = unsafe { &mut (*addr_of_mut!(MODULE_BUFS))[mod_idx] };
 
-        match kernix_elf::load_at(ko_data, buf) {
+        match avaria_elf::load_at(ko_data, buf) {
             Ok(loaded) => {
                 unsafe {
                     kern::mem::make_executable(
@@ -358,7 +358,7 @@ unsafe extern "C" fn _start() -> ! {
                         loaded.load_size,
                     );
                 };
-                let api_ptr = &KERNIX_API as *const KernixApi as *const ();
+                let api_ptr = &AVARIA_API as *const avariaApi as *const ();
                 kern::sched::spawn(loaded.entry, api_ptr, path.as_bytes());
                 mod_idx += 1;
             }
@@ -372,14 +372,14 @@ unsafe extern "C" fn _start() -> ! {
 
     kern::sched::spawn(shell_task_entry as u64, core::ptr::null(), b"shell");
 
-    serial::puts("Kernix ready.\n");
+    serial::puts("avaria ready.\n");
 
     kern::sched::start();
 }
 
 const SHELL_FG: u32 = 0xFFFFFF;
 const SHELL_BG: u32 = 0x000080;
-const SHELL_PROMPT: &str = "kernix> ";
+const SHELL_PROMPT: &str = "avaria> ";
 const SHELL_CHAR_W: usize = 8;
 const SHELL_CHAR_H: usize = 16;
 const SHELL_PAD_X: usize = 8;

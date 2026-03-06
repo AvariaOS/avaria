@@ -1,7 +1,7 @@
 #![no_std]
 
 #[repr(C)]
-pub struct KernixApi {
+pub struct avariaApi {
     pub serial_puts: unsafe extern "C" fn(*const u8, usize),
     pub fb_draw_str: unsafe extern "C" fn(x: usize, y: usize, *const u8, usize, fg: u32, bg: u32),
     pub fs_read: unsafe extern "C" fn(*const u8, usize, *mut *const u8, *mut usize) -> i32,
@@ -13,7 +13,7 @@ pub struct KernixApi {
     pub preempt_enable: unsafe extern "C" fn(),
 }
 
-impl KernixApi {
+impl avariaApi {
     pub fn serial_print(&self, s: &str) {
         unsafe { (self.serial_puts)(s.as_ptr(), s.len()) };
     }
