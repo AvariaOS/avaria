@@ -1,0 +1,19 @@
+[package]
+name = "kernix"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = ["src/kern/crates/kernix-elf", "src/kern/crates/kernix-api"]
+exclude = ["modules/memtest", "modules/init"]
+
+[dependencies]
+limine = "0.5"
+kernix-elf = { path = "src/kern/crates/kernix-elf" }
+kernix-api = { path = "src/kern/crates/kernix-api" }
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

@@ -1,0 +1,14 @@
+/target
+*.iso
+*.bin
+*.img
+*.ko
+*.tar
+*.zip
+*.log
+*.dmp
+*.vmdk
+*.vdi
+*.vhd
+*.vhdx
+*.lock

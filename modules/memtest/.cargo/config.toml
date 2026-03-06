@@ -1,0 +1,9 @@
+[build]
+target = "x86_64-unknown-none"
+
+[target.x86_64-unknown-none]
+rustflags = ["-C", "relocation-model=pic", "-C", "link-arg=-T", "-C", "link-arg=link.ld"]
+
+[unstable]
+build-std = ["core"]
+build-std-features = ["compiler-builtins-mem"]

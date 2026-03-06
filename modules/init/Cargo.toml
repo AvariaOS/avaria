@@ -1,0 +1,11 @@
+[package]
+name = "init"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[profile.release]
+panic = "abort"
+opt-level = "s"
+lto = true
